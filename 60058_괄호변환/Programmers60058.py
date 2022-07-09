@@ -20,11 +20,8 @@ def change(w):
     if checkRightStr(u):
         return u + change(v)
     else:
-        if u == "":
-            u = "(" + change(v) + ")"
-        else:
-            u = "".join([flip(x) for x in u[1:-1]])
-            u = "(" +  change(v) + ")" + u
+        u = "".join([flip(x) for x in u[1:-1]])
+        u = "(" + change(v) + ")" + u
         return u
 
     
@@ -40,10 +37,5 @@ def splitBalenced(w):
             return (w[0:i+1], w[i+1:])
 
 def solution(p):
-    answer = p if checkRightStr(p) else change(p)
+    answer = change(p)
     return answer
-
-
-solution("(()())()")
-solution(")(")
-solution("()))((()")
