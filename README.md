@@ -8,6 +8,10 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
 - reverse할 때 slicing보다 reversed 사용하는게 조금더 좋다고는함.
 <br/> <br/> 
 
+## 자바 정리
+- 자바 자료구조
+  - ![image](https://user-images.githubusercontent.com/54143203/178130283-bcae9837-288b-4d72-8024-4a19570e3328.png)
+
 ## 60060_가사검색에서 Python vs C++
 - c++에서 nodeDict을 배열[26]으로 해싱 대체해서 해봤는데 c++이 속도가 10배이상 빠르다.
 - 근데 파이썬에서 dict이 차지하는 오버헤드가 있는건지하고 dict -> 리스트[26] 해싱으로 바꾸어봤는데 오히려 더 느려짐(수행속도는 아래 사진 참조).
