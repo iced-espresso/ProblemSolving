@@ -8,7 +8,7 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
 <br/> <br/> 
 
 ## 자바 정리
-- 자바 자료구조
+- 자바 collections
   - ![image](https://user-images.githubusercontent.com/54143203/178130283-bcae9837-288b-4d72-8024-4a19570e3328.png)
 
 ## 60060_가사검색에서 Python vs C++
