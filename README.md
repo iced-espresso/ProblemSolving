@@ -10,6 +10,42 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
 ## 자바 정리
 - 자바 collections
   - ![image](https://user-images.githubusercontent.com/54143203/178130283-bcae9837-288b-4d72-8024-4a19570e3328.png)
+- Anoymous 객체
+  - 이름이 없는 클래스.
+  - 재사용 목적이 아닌 1번만 사용하려고 할때 사용함.
+  - ex) UI 이벤트처리, 스레드 객체, comparator 등
+  - 예시코드
+    ```java
+    import java.util.Comparator;
+
+    public class AnonymousTest {
+
+        public static void main(String args[]){
+            Person person_age1 = new Person(1);
+            Person person_age10 = new Person(10);
+
+            Comparator<Person> ageComparator = new Comparator<Person>() {
+                @Override
+                public int compare(Person o1, Person o2) {
+                    return o1.getAge() - o2.getAge();
+                }
+            };
+
+            System.out.println(ageComparator.compare(person_age1, person_age10));
+        }
+    }
+
+    class Person{
+        private int age;
+        Person(int age){
+            this.age = age;
+        }
+        public int getAge(){
+            return age;
+        }
+    }
+    ```
+  
 
 ## 60060_가사검색에서 Python vs C++
 - c++로 동일로직 짜봤는데 10배~20배나 빠르다.
