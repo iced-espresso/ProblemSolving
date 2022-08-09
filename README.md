@@ -46,11 +46,11 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
             return age;
         }
     }
-    ``` 
+
 
 - Java Sort에 관하여 
   1. java에서 Arrays.sort()와 Collections.sort()의 내부 구현이 다르다.
-      - ![img.png](img.png)
+      - ![image](https://user-images.githubusercontent.com/54143203/183700534-41b4d393-4677-4625-b908-8c9715a7b30d.png)
       - 생각해보면 primitive형 정렬에는 stable 정렬이 의미가 없을테니 quick sort를 응용한 방식을 쓴 것 같고, Object에 대한 정렬에서는 stable 정렬이 필요하다 생각하여 TimSort를 사용한 것 같다.
         - 참고로 TimSort의 경우 merge sort and insertion sort의 hybrid버전이라고 한다.
   2) Object에 대한 다양한 sort 방법
@@ -61,10 +61,38 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
         3) 람다식 이용
            - ```java
              Collections.sort(personList, (a,b)-> a.getAge() - b.getAge());
-             ``` 
+   
      2) Comparable implements 하여 compareTo 구현
         - 개인적으로는 제일 자주쓰고 편한방법
-        - 
+        - ```java
+            class Person implements Comparable<Person>{
+                private int age;
+                private String name;
+                Person(int age, String name){
+                    this.age = age;
+                    this.name = name;
+                }
+                public int getAge(){
+                    return age;
+                }
+                public String getName(){
+                    return name;
+                }
+                public String toString(){
+                    return "(" + name + "," + Integer.toString(age) + ")";
+                }
+
+                @Override
+                public int compareTo(Person target){
+                    if(this.name.equals(target.name)){
+                        return this.age - target.age;
+                    }
+                    else {
+                        return this.name.compareTo(target.name);
+                    }
+                }
+            }
+
 ## 60060_가사검색에서 Python vs C++
 - c++로 동일로직 짜봤는데 10배~20배나 빠르다.
   - ![image](https://user-images.githubusercontent.com/54143203/177346026-be2725a1-c70d-4480-9e1d-53fccb2e5098.png) ![image](https://user-images.githubusercontent.com/54143203/177345095-95140268-92bd-4e91-bef5-9802609127cf.png)
