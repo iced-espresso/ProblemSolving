@@ -18,7 +18,7 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
   - ![image](https://user-images.githubusercontent.com/54143203/178130283-bcae9837-288b-4d72-8024-4a19570e3328.png)
 
 
-- #### Anoymous 객체
+- ### Anoymous 객체
   
   - 이름이 없는 클래스.
   - 재사용 목적이 아닌 1번만 사용하려고 할때 사용함.
@@ -55,14 +55,14 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
     }
 
 
-- #### Java Sort에 관하여 
+- ### Java Sort에 관하여 
   
   1. **java에서 Arrays.sort()와 Collections.sort()의 내부 구현이 다르다**.
       
       - | Type                            | Method                                | 구현 Alogirhm      | 시간 복잡도                                             |
         | ------------------------------- | ------------------------------------- | ------------------ | ------------------------------------------------------- |
         | Primitive Array                 | Arrays.sort()                         | DualPivotQuicksort | Best:O(NlogN)<br />Average:O(NlogN)<br />Worst:O(N^2)   |
-        | Object형 Array<br />Collections | Arrays.sort()<br />Collections.sort() | Timsort(stable)    | Best:O(NlogN)<br />Average:O(NlogN)<br />Worst:O(NlogN) |
+        | 1. Object형 Array<br />2. Collections | Arrays.sort()<br />Collections.sort() | Timsort(stable)    | Best:O(NlogN)<br />Average:O(NlogN)<br />Worst:O(NlogN) |
       
       - 생각해보면 primitive형 정렬에는 stable 정렬이 의미가 없을테니 quick sort를 응용한 방식을 쓴 것 같고, Object에 대한 정렬에서는 stable 정렬이 필요하다 생각하여 TimSort를 사용한 것 같다.
       
@@ -78,11 +78,11 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
              Collections.sort(personList, (a,b)-> a.getAge() - b.getAge());
              ```
         
-     2) Comparable implements 하여 compareTo 구현
+     2) Comparable 이용
         - 개인적으로는 제일 자주쓰고 편한방법
+        - Comparable implements 하여 compareTo 구현
         - ```java
           class Person implements Comparable<Person>{
-
                 private int age;
                 private String name;
 
@@ -112,8 +112,8 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
                         return this.name.compareTo(target.name);
                     }
                 }
-                
             }
+            ```
             
 
 ## 60060_가사검색에서 Python vs C++
