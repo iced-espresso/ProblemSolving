@@ -114,6 +114,18 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
                 }
             }
             ```
+- ### Java HashMap
+  - java의 HashMap은 이름 그대로 hash code를 이용해 key:value 매핑을 해주는 자료구조이다.
+  - 내부적으로 버킷(table) 배열을 가지고 있다.
+  - Separate Chaining으로 해시충돌을 해결한다고 하며, 버킷 내에서는 RBT(Red BlacK Tree)를 사용하여 효율적으로 충돌을 관리한다.
+    - 버킷의 Size가 8미만일 경우 그냥 Linear Chain으로 둔다고 한다. 8이상이 되면 RBT로 전환.
+  - 일반적인 경우에선 HashMap 조회/삽입에 대한 시간복잡도는 O(1)로 봐도 되겠지만 Worst Case에서는 O(logN)이 될수도 있다. (많은 충돌이 있을경우) 
+  - 또한 HashMap에서는 데이터의 개수가 내부 Threshold에 이를 때 마다 해시 버킷 사이즈를 2배씩 하는데(초기 default값은 16), 이 과정에서 오버헤드가 굉장히 클 수 있으므로 저장될 데이터의 개수가 어느정도 예측이 된다면 버킷 사이즈를 생성자로 미리 지정하는 것이 바람직하다.
+    - 만약 데이터 개수를 예상할 수 없다면 항상 O(logN)을 보장하는 TreeMap을 사용하는 것이 오히려 좋은 performance를 보이는 case도 있을 수 있다.
+  - HashMap은 데이터 삽입에 대한 순서가 보장되지 않으므로, 순서가 보장되어야 한다면 LinkedHashMap을 사용하고 정렬이 필요하다면 TreeMap을 사용하자.
+- ### transient 키워드
+  - 자바의 transient 키워드는 class의 필드 중 직렬화하지 않을 것들을 지정하기 위해 사용된다.
+  - 즉, 객체가 바이트 스트림으로 serialize될 때 transient 키워드가 붙은 필드는 제외되고, deserialize 시에는 해당 필드의 타입별 기본 값이 할당된다고 한다. 
             
 
 ## 60060_가사검색에서 Python vs C++
