@@ -125,7 +125,68 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
   - HashMap은 데이터 삽입에 대한 순서가 보장되지 않으므로, 순서가 보장되어야 한다면 LinkedHashMap을 사용하고 정렬이 필요하다면 TreeMap을 사용하자.
 - ### transient 키워드
   - 자바의 transient 키워드는 class의 필드 중 직렬화하지 않을 것들을 지정하기 위해 사용된다.
-  - 즉, 객체가 바이트 스트림으로 serialize될 때 transient 키워드가 붙은 필드는 제외되고, deserialize 시에는 해당 필드의 타입별 기본 값이 할당된다고 한다. 
+  - 즉, 객체가 바이트 스트림으로 serialize될 때 transient 키워드가 붙은 필드는 제외되고, deserialize 시에는 해당 필드의 타입별 기본 값이 할당된다고 한다.
+- ### Singleton 
+  - 싱글톤 패턴이란 "최초 한번만 메모리를 할당하고(Static) 그 메모리에 객체를 만들어 사용하는 디자인 패턴"이다.
+    - 일반적으로 getInstance() 라는 메소드를 통해 Singleton 클래스를 가져와 사용한다.
+  - 기본적인 형태의 Singleton 구현은 아래와 같다. 
+    - ```java
+      class Singleton {
+          private static Singleton instance = new Singleton();
+
+          //생성자가 private이므로 외부에서 호출 new로 생성 못함.
+          private Singleton() {}
+
+          public static Singleton getInstance() {
+              return instance;
+          }
+      }
+      ```
+  - 위와 같이 구현하였을 때, 클래스의 로딩 시점에 static 인스턴스가 생성되므로 아래와 같이 lazy init을 할수 있다.
+    - ```java
+      class Singleton {
+          private static Singleton instance;
+
+          private Singleton() {}
+
+          public static Singleton getInstance() {
+              if(instance == null){
+                  instance = new Singleton();
+              }
+              return instance;
+          }
+      }
+      ```
+    - 하지만 위와 같은 방식도 문제가 있는데, 바로 멀티 쓰레드 환경에서 instance가 여러개 생길 수 있다는 것이다.
+    - Thread-safe를 고려하기위해 synchrosized를 사용하여도 되지만 이러면 성능이 저하된다.
+  - Lazy Init & Thread-safe한 좋은 방법으로 아래와 같이 Holder를 사용하는 방식이 있다.
+    - ```java
+      class Singleton {
+          private Singleton() {}
+
+          public static Singleton getInstance() {
+              return InstanceHolder.instance
+          }
+
+          private static class InstanceHolder{
+              private static final Singleton instance = new Singleton();
+          }
+      }
+        ```
+  - 추가적으로 effective java에 나와 있는 enum을 통한 Singleton 구현 방법도 있다. 
+    - ```java
+      enum Singleton {
+          INSTANCE;
+
+          private Singleton() {
+          }
+          public static Singleton getInstance() {
+              return Singleton.INSTANCE;
+          }
+      }
+      ```
+    - 해당 방식으로 구현하게 될 시 Serialization 문제와 Reflection 문제를 간단히 해결 할 수 있다.
+    - enum을 사용할 시 클래스로딩 시점에 만들어지니 lazy init은 아니지만, 사실상 해당 enum을 클래스로딩만 하고 구체적인 타입을 쓰지 않는 경우는 거의 없으므로 이 점은 크게 고민하지 않아도 된다고 한다.
             
 
 ## 60060_가사검색에서 Python vs C++
