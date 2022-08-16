@@ -187,6 +187,46 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
       ```
     - 해당 방식으로 구현하게 될 시 Serialization 문제와 Reflection 문제를 간단히 해결 할 수 있다.
     - enum을 사용할 시 클래스로딩 시점에 만들어지니 lazy init은 아니지만, 사실상 해당 enum을 클래스로딩만 하고 구체적인 타입을 쓰지 않는 경우는 거의 없으므로 이 점은 크게 고민하지 않아도 된다고 한다.
+  - 좋은글
+    - https://velog.io/@skyepodium/%ED%81%B4%EB%9E%98%EC%8A%A4%EB%8A%94-%EC%96%B8%EC%A0%9C-%EB%A1%9C%EB%94%A9%EB%90%98%EA%B3%A0-%EC%B4%88%EA%B8%B0%ED%99%94%EB%90%98%EB%8A%94%EA%B0%80
+- ### static 멤버 접근 vs static final 멤버 접근, class loading
+   - ```java
+      public class Main {
+          public static void main(String[] args) {
+              System.out.println(ClassA.staticMember);
+              System.out.println(ClassB.staticFinalMember);
+              System.out.println(ClassB.staticFinalClassC);
+          }
+      }
+
+      class ClassA {
+          static {
+              System.out.println("ClassA Loading");
+          }
+
+          public static String staticMember = "ClassA static member";
+      }
+
+      class ClassB {
+          static {
+              System.out.println("ClassB Loading");
+          }
+
+          public static final String staticFinalMember = "ClassB static final member";
+          public static final ClassC staticFinalClassC = new ClassC();
+      }
+
+      class ClassC {
+          static {
+              System.out.println("ClassC Loading");
+          }
+      }
+      ```
+  - 위와 같은 코드가 있다 하면 실행 결과는 다음과 같다.
+    - ![image](image_실행결과.png)
+    - static final primitive type 멤버에 대한 접근으로는 class loading이 되지 않는다.
+    - static primitive type 멤버에 대한 접근으로는 class loading이 된다.
+    - static final reference type 멤버에 대한 접근으로는 class loading이 된다. (ClassA, ClassC 모두 Loading됨)
             
 
 ## 60060_가사검색에서 Python vs C++
