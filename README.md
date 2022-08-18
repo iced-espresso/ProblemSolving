@@ -58,7 +58,7 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
 - ### Java Sort에 관하여 
   
   1. **java에서 Arrays.sort()와 Collections.sort()의 내부 구현이 다르다**.
-      
+     
       - | Type                            | Method                                | 구현 Alogirhm      | 시간 복잡도                                             |
         | ------------------------------- | ------------------------------------- | ------------------ | ------------------------------------------------------- |
         | Primitive Array                 | Arrays.sort()                         | DualPivotQuicksort | Best:O(NlogN)<br />Average:O(NlogN)<br />Worst:O(N^2)   |
@@ -85,20 +85,20 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
           class Person implements Comparable<Person>{
                 private int age;
                 private String name;
-
+          
                 Person(int age, String name){
                     this.age = age;
                     this.name = name;
                 }
-
+          
                 public int getAge(){
                     return age;
                 }
-
+          
                 public String getName(){
                     return name;
                 }
-
+          
                 public String toString(){
                     return "(" + name + "," + Integer.toString(age) + ")";
                 }
@@ -113,7 +113,7 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
                     }
                 }
             }
-            ```
+          ```
 - ### Java HashMap
   - java의 HashMap은 이름 그대로 hash code를 이용해 key:value 매핑을 해주는 자료구조이다.
   - 내부적으로 버킷(table) 배열을 가지고 있다.
@@ -129,14 +129,14 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
 - ### Singleton 
   - 싱글톤 패턴이란 "최초 한번만 메모리를 할당하고(Static) 그 메모리에 객체를 만들어 사용하는 디자인 패턴"이다.
     - 일반적으로 getInstance() 라는 메소드를 통해 Singleton 클래스를 가져와 사용한다.
-  - 기본적인 형태의 Singleton 구현은 아래와 같다. 
+  - 간단한 형태의 Singleton 구현은 아래와 같다. 
     - ```java
       class Singleton {
           private static Singleton instance = new Singleton();
-
+      
           //생성자가 private이므로 외부에서 호출 new로 생성 못함.
           private Singleton() {}
-
+      
           public static Singleton getInstance() {
               return instance;
           }
@@ -146,9 +146,9 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
     - ```java
       class Singleton {
           private static Singleton instance;
-
+      
           private Singleton() {}
-
+      
           public static Singleton getInstance() {
               if(instance == null){
                   instance = new Singleton();
@@ -163,21 +163,21 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
     - ```java
       class Singleton {
           private Singleton() {}
-
+      
           public static Singleton getInstance() {
               return InstanceHolder.instance
           }
-
+      
           private static class InstanceHolder{
               private static final Singleton instance = new Singleton();
           }
       }
-        ```
+      ```
   - 추가적으로 effective java에 나와 있는 enum을 통한 Singleton 구현 방법도 있다. 
     - ```java
       enum Singleton {
           INSTANCE;
-
+      
           private Singleton() {
           }
           public static Singleton getInstance() {
@@ -189,7 +189,7 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
     - enum을 사용할 시 클래스로딩 시점에 만들어지니 lazy init은 아니지만, 사실상 해당 enum을 클래스로딩만 하고 구체적인 타입을 쓰지 않는 경우는 거의 없으므로 이 점은 크게 고민하지 않아도 된다고 한다.
   - 좋은글
     - https://velog.io/@skyepodium/%ED%81%B4%EB%9E%98%EC%8A%A4%EB%8A%94-%EC%96%B8%EC%A0%9C-%EB%A1%9C%EB%94%A9%EB%90%98%EA%B3%A0-%EC%B4%88%EA%B8%B0%ED%99%94%EB%90%98%EB%8A%94%EA%B0%80
-- ### static 멤버 접근 vs static final 멤버 접근, class loading
+- ### class loading 관점에서 static 멤버 접근 vs static final 멤버 접근, 
    - ```java
       public class Main {
           public static void main(String[] args) {
@@ -198,24 +198,24 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
               System.out.println(ClassB.staticFinalClassC);
           }
       }
-
+     
       class ClassA {
           static {
               System.out.println("ClassA Loading");
           }
-
+     
           public static String staticMember = "ClassA static member";
       }
-
+     
       class ClassB {
           static {
               System.out.println("ClassB Loading");
           }
-
+     
           public static final String staticFinalMember = "ClassB static final member";
           public static final ClassC staticFinalClassC = new ClassC();
       }
-
+     
       class ClassC {
           static {
               System.out.println("ClassC Loading");
@@ -227,7 +227,18 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
     - static final primitive type 멤버에 대한 접근으로는 class loading이 되지 않는다.
     - static primitive type 멤버에 대한 접근으로는 class loading이 된다.
     - static final reference type 멤버에 대한 접근으로는 class loading이 된다. (ClassA, ClassC 모두 Loading됨)
-            
+- ### JPA Entity는 non-private 기본생성자가 필요하다.
+  - JPA의 Entity는 반드시 기본 생성자(NoArgsConstructor)를 지녀야 한다.
+    - 이유 : JPA는 DB 값을 객체 필드에 주입할 때 기본 생성자로 객체를 생성한 후 Reflection API를 사용하기 때문이다.
+  - Entity의 기본 생성자는 public, protected 이어야하고 private 으로 선언해서는 안된다.
+    - 이유 : 이는 JPA의 지연로딩과 관련이 있다.
+      - JPA의 지연로딩(Lazy Loading)이란? &rarr;  https://velog.io/@nyong_i/JPA-%EC%A7%80%EC%97%B0%EB%A1%9C%EB%94%A9LAZY-LOADING
+    -  지연로딩으로 인해 Proxy 객체를 사용하게 되는 경우, 원본 Entity를 상속하게 된다.
+    -  그 후 실제로 사용되는 시점에 Entity 정보를 조회하여 Proxy Entity가 원본 Entity를 참조하도록 한다. 
+    -  private 기본생성자를 사용하게 된다면 상속이 불가능해지기에 protected나 public 생성자를 사용해야한다.
+
+
+​            
 
 ## 60060_가사검색에서 Python vs C++
 - c++로 동일로직 짜봤는데 10배~20배나 빠르다.
