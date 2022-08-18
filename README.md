@@ -198,24 +198,24 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
               System.out.println(ClassB.staticFinalClassC);
           }
       }
-     
+       
       class ClassA {
           static {
               System.out.println("ClassA Loading");
           }
-     
+       
           public static String staticMember = "ClassA static member";
       }
-     
+       
       class ClassB {
           static {
               System.out.println("ClassB Loading");
           }
-     
+       
           public static final String staticFinalMember = "ClassB static final member";
           public static final ClassC staticFinalClassC = new ClassC();
       }
-     
+       
       class ClassC {
           static {
               System.out.println("ClassC Loading");
@@ -237,10 +237,38 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
     -  그 후 실제로 사용되는 시점에 Entity 정보를 조회하여 Proxy Entity가 원본 Entity를 참조하도록 한다. 
     -  private 기본생성자를 사용하게 된다면 상속이 불가능해지기에 protected나 public 생성자를 사용해야한다.
 
+## 네트워크       
 
-​            
+- ### OSI 7계층 간단 정리
+
+  1. Physical Layer : 디지털 데이터 <-> 아날로그 신호로 변환 해주는 모듈
+  2. Data-link Layer: **같은 네트워크** 상에 있는 **컴퓨터들**이 **데이터**를 주고 받을 수 있게 해주는 모듈. 
+     - 이더넷 프로토콜이 사용된다.
+     - framing
+     - mac 주소 기반으로 동작한다.
+     - 허브, L2 스위치가 해당계층에서 사용되는 장비다. 
+  3. Network Layer(Internet Layer) : **서로 다른 네트워크**에 있는 **컴퓨터들**끼리 **통신**할 수 있게 해주는 모듈
+     - IP 주소를 이용해서 최적의 길을 찾고(라우팅), 자신 다음의 라우터에게 데이터를 넘겨주는 것(포워딩)
+     - 라우터가 라우팅 테이블 관리. 캐시도 사용
+     - IP 주소 기반으로 동작한다.
+     - ARP 프로토콜 : IP 주소를 MAC 주소로 변환시켜주는 프로토콜
+  4. Transport Layer : **어플리케이션(프로세스)** 간 **신뢰**할 수 있는 데이터 통신이 가능하도록 하는 모듈
+     - 포트 번호를 통해 컴퓨터 내 응용 프로세스를 구분가능케 한다.
+     - 연결지향형 통신: 신뢰성/정확성이 우선인 통신이라서 여러 번 확인하고 보내는, 상대편과 확인해가며 통신하는 방식
+     - 비연결형 통신 : 효율성을 우선으로 하여, 확인 절차 없이 데이터를 전달하는 통신방식
+     - 연결지향형 통신 : TCP, 비연결형 통신: UDP
+     - 3계층까지가 하드웨어 통신을 주로 다룬다면, 4계층부터는 소프트웨어 통신을 많이 다룬다.
+  5.  Session Layer : 데이터가 통신하기 위한 논리적인 연결을 해주는 모듈
+     - 통신을 하기 위한 세션을 확립/유지/중단(운영체제가 해줌)
+  6. Presentation Layer : 여러 다른 시스템들이 저마다 다른 데이터 표현 방식을 사용하는데, 이를 하나의 통일된 구문 형식으로 변환시키는 기능을 수행하는 모듈.
+  7. Application Layer : 실 서비스(네트워크 어플리케이션)을 제공하기 위해  인터넷 상 컴퓨터들 간 다양한 데이터(메세지, 명령)를 주고 받게 해주는 모듈.
+     - HTTP/FTP/SSH/Telnet 등의 프로토콜
+     - 클라이언트 - 서버 모델, P2P 모델 2가지 모델이 존재
+     - 클라이언트 - 서버 모델 : 클라이언트는 서버에게 서비스 요청. 서비스는 요청에 대한 처리와 응답. 웹 서비스 등. 주로 TCP 이용
+     - P2P 모델 : 개인과 개인이 연결되어 통신되는 구조. 
 
 ## 60060_가사검색에서 Python vs C++
+
 - c++로 동일로직 짜봤는데 10배~20배나 빠르다.
   - ![image](https://user-images.githubusercontent.com/54143203/177346026-be2725a1-c70d-4480-9e1d-53fccb2e5098.png) ![image](https://user-images.githubusercontent.com/54143203/177345095-95140268-92bd-4e91-bef5-9802609127cf.png)
   - 좌: 파이썬, 우: c++
