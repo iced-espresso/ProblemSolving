@@ -267,6 +267,42 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
   6. Servlet Container는 HttpServletResponse 객체를 HTTP 형태로 바꾸어 응답한다.
   7. 이 후 HttpServletRequest, HttpServletResponse 객체의 메모리를 소멸 시킨다.
 
+- ### DispatcherServlet
+
+  - ![image-20220831051914472](D:\git_repos\ProblemSolving\DispatcherServlet.png)
+
+  - DispatcherServlet이란 HTTP 프로토콜을 통해 들어오는 모든 요청을 가장 먼저 받아 중앙집중식으로 처리하는 프론트 컨트롤러이다.
+
+  - DispatcherServlet의 동작과정은 다음과 같다.
+
+    1. Client의 HTTP요청을 DispatcherServlet이 받는다.
+
+    2. HandlerMapping을 통해 HTTP 요청에 해당하는 Controller를 찾는다.
+
+       - HandlerMapping의 구현체 중 RequestMappingHandlerMapping은 @Controller로 작성된 모든 컨트롤러 Bean을 파싱하여 HashMap으로 관리한다.
+
+    3. 해당하는 Controller에 요청을 위임할 핸들러 어댑터를 찾아 전달한다.
+
+       - 어댑터를 사용하는 이유는 Controller의 구현 방식이 다양하기 때문이다.
+       - 즉 어댑터 패턴을 적용하므로써 Controller의 구현 방식에 상관없이 요청을 위임할 수 있다.
+
+    4. HandlerAdapter가 Controller로 요청을 위임한다.
+
+    5. Controller를 통해 비즈니스 로직이 처리된다.
+
+    6. Controller가 요청을 처리한 뒤 반환한다.
+
+    7. HandlerAdapter가 반환값을 처리한다.
+
+       1. 만약 Controller가 View 이름을 반환하면 ViewResolver를 통해 렌더링 후 View를 반환하게 된다.
+       2. 만약 객체를 반환하였다면(@RestController) ViewResolver 대신 HttpMessageConverter가 동작해서 객체를 JSON으로 Serialize하여 반환한다. 
+
+       
+
+- ### @Controller vs. @RestController
+
+  - TBD
+
 ## 네트워크       
 
 - ### OSI 7계층 간단 정리
