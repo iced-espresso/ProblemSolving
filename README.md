@@ -56,7 +56,7 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
 
 
 - ### Java Sort에 관하여 
-  
+
   1. **java에서 Arrays.sort()와 Collections.sort()의 내부 구현이 다르다**.
      
       - | Type                            | Method                                | 구현 Alogirhm      | 시간 복잡도                                             |
@@ -114,6 +114,7 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
                 }
             }
           ```
+
 - ### Java HashMap
   - java의 HashMap은 이름 그대로 hash code를 이용해 key:value 매핑을 해주는 자료구조이다.
   - 내부적으로 버킷(table) 배열을 가지고 있다.
@@ -123,9 +124,11 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
   - 또한 HashMap에서는 데이터의 개수가 내부 Threshold에 이를 때 마다 해시 버킷 사이즈를 2배씩 하는데(초기 default값은 16), 이 과정에서 오버헤드가 굉장히 클 수 있으므로 저장될 데이터의 개수가 어느정도 예측이 된다면 버킷 사이즈를 생성자로 미리 지정하는 것이 바람직하다.
     - 만약 데이터 개수를 예상할 수 없다면 항상 O(logN)을 보장하는 TreeMap을 사용하는 것이 오히려 좋은 performance를 보이는 case도 있을 수 있다.
   - HashMap은 데이터 삽입에 대한 순서가 보장되지 않으므로, 순서가 보장되어야 한다면 LinkedHashMap을 사용하고 정렬이 필요하다면 TreeMap을 사용하자.
+
 - ### transient 키워드
   - 자바의 transient 키워드는 class의 필드 중 직렬화하지 않을 것들을 지정하기 위해 사용된다.
   - 즉, 객체가 바이트 스트림으로 serialize될 때 transient 키워드가 붙은 필드는 제외되고, deserialize 시에는 해당 필드의 타입별 기본 값이 할당된다고 한다.
+
 - ### Singleton 
   - 싱글톤 패턴이란 "최초 한번만 메모리를 할당하고(Static) 그 메모리에 객체를 만들어 사용하는 디자인 패턴"이다.
     - 일반적으로 getInstance() 라는 메소드를 통해 Singleton 클래스를 가져와 사용한다.
@@ -189,53 +192,80 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
     - enum을 사용할 시 클래스로딩 시점에 만들어지니 lazy init은 아니지만, 사실상 해당 enum을 클래스로딩만 하고 구체적인 타입을 쓰지 않는 경우는 거의 없으므로 이 점은 크게 고민하지 않아도 된다고 한다.
   - 좋은글
     - https://velog.io/@skyepodium/%ED%81%B4%EB%9E%98%EC%8A%A4%EB%8A%94-%EC%96%B8%EC%A0%9C-%EB%A1%9C%EB%94%A9%EB%90%98%EA%B3%A0-%EC%B4%88%EA%B8%B0%ED%99%94%EB%90%98%EB%8A%94%EA%B0%80
+
 - ### class loading 관점에서 static 멤버 접근 vs static final 멤버 접근, 
-   - ```java
-      public class Main {
-          public static void main(String[] args) {
-              System.out.println(ClassA.staticMember);
-              System.out.println(ClassB.staticFinalMember);
-              System.out.println(ClassB.staticFinalClassC);
-          }
-      }
-       
-      class ClassA {
-          static {
-              System.out.println("ClassA Loading");
-          }
-       
-          public static String staticMember = "ClassA static member";
-      }
-       
-      class ClassB {
-          static {
-              System.out.println("ClassB Loading");
-          }
-       
-          public static final String staticFinalMember = "ClassB static final member";
-          public static final ClassC staticFinalClassC = new ClassC();
-      }
-       
-      class ClassC {
-          static {
-              System.out.println("ClassC Loading");
-          }
-      }
-      ```
+  - ```java
+     public class Main {
+         public static void main(String[] args) {
+             System.out.println(ClassA.staticMember);
+             System.out.println(ClassB.staticFinalMember);
+             System.out.println(ClassB.staticFinalClassC);
+         }
+     }
+      
+     class ClassA {
+         static {
+             System.out.println("ClassA Loading");
+         }
+      
+         public static String staticMember = "ClassA static member";
+     }
+      
+     class ClassB {
+         static {
+             System.out.println("ClassB Loading");
+         }
+      
+         public static final String staticFinalMember = "ClassB static final member";
+         public static final ClassC staticFinalClassC = new ClassC();
+     }
+      
+     class ClassC {
+         static {
+             System.out.println("ClassC Loading");
+         }
+     }
+     ```
   - 위와 같은 코드가 있다 하면 실행 결과는 다음과 같다.
     - ![image](image_실행결과.png)
     - static final primitive type 멤버에 대한 접근으로는 class loading이 되지 않는다.
     - static primitive type 멤버에 대한 접근으로는 class loading이 된다.
     - static final reference type 멤버에 대한 접근으로는 class loading이 된다. (ClassA, ClassC 모두 Loading됨)
+
+  
+
+## Spring
+
 - ### JPA Entity는 non-private 기본생성자가 필요하다.
+
   - JPA의 Entity는 반드시 기본 생성자(NoArgsConstructor)를 지녀야 한다.
     - 이유 : JPA는 DB 값을 객체 필드에 주입할 때 기본 생성자로 객체를 생성한 후 Reflection API를 사용하기 때문이다.
   - Entity의 기본 생성자는 public, protected 이어야하고 private 으로 선언해서는 안된다.
     - 이유 : 이는 JPA의 지연로딩과 관련이 있다.
       - JPA의 지연로딩(Lazy Loading)이란? &rarr;  https://velog.io/@nyong_i/JPA-%EC%A7%80%EC%97%B0%EB%A1%9C%EB%94%A9LAZY-LOADING
-    -  지연로딩으로 인해 Proxy 객체를 사용하게 되는 경우, 원본 Entity를 상속하게 된다.
-    -  그 후 실제로 사용되는 시점에 Entity 정보를 조회하여 Proxy Entity가 원본 Entity를 참조하도록 한다. 
-    -  private 기본생성자를 사용하게 된다면 상속이 불가능해지기에 protected나 public 생성자를 사용해야한다.
+    - 지연로딩으로 인해 Proxy 객체를 사용하게 되는 경우, 원본 Entity를 상속하게 된다.
+    - 그 후 실제로 사용되는 시점에 Entity 정보를 조회하여 Proxy Entity가 원본 Entity를 참조하도록 한다. 
+    - private 기본생성자를 사용하게 된다면 상속이 불가능해지기에 protected나 public 생성자를 사용해야한다.
+
+- ### @Bean과 @Component 의 차이
+
+
+  - @Bean의 경우 개발자가 컨트롤 불가능한 **외부 라이브러리**들을 Bean으로 등록시키고 싶을 때 사용한다.
+  - @Bean의 경우 주로 @Configuration이 붙은 클래스 내의 메소드에 사용된다.
+  - @Component의 경우 **개발자가 컨트롤 가능한 Class**에 붙여 사용한다.
+  - @Component는 @Service, @Controller, @Repository에 포함되어 있다.
+
+- ### Servlet 동작과정
+
+  1. client가 HTTP Request를 Servlet Container에 보낸다.
+  2. Servlet Container는 HttpServletRequest, HttpServletResponse 두 객체를 생성한다.
+  3. Client의 HTTP 요청을 분석하여 어느 Servlet에 대한 요청인지 찾는다.
+  4. 해당하는 Servlet의 service() 메소드를 호출 및 doGet() doPost() 등을 호출
+     - 2에서 생성된 HttpServletRequest, HttpServletResponse가 인자로 전달됨.
+     - 이 과정에서 해당 Servlet이 없다면 생성하고 init()을 먼저 호출한다.
+  5. doGet()/doPost() 에서 생성된 동적 웹 페이지 결과물이 HttpServletResponse 객체에 담긴다.
+  6. Servlet Container는 HttpServletResponse 객체를 HTTP 형태로 바꾸어 응답한다.
+  7. 이 후 HttpServletRequest, HttpServletResponse 객체의 메모리를 소멸 시킨다.
 
 ## 네트워크       
 
