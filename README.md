@@ -240,32 +240,50 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
 
   - JPA의 Entity는 반드시 기본 생성자(NoArgsConstructor)를 지녀야 한다.
     - 이유 : JPA는 DB 값을 객체 필드에 주입할 때 기본 생성자로 객체를 생성한 후 Reflection API를 사용하기 때문이다.
+    
   - Entity의 기본 생성자는 public, protected 이어야하고 private 으로 선언해서는 안된다.
     - 이유 : 이는 JPA의 지연로딩과 관련이 있다.
       - JPA의 지연로딩(Lazy Loading)이란? &rarr;  https://velog.io/@nyong_i/JPA-%EC%A7%80%EC%97%B0%EB%A1%9C%EB%94%A9LAZY-LOADING
+      
     - 지연로딩으로 인해 Proxy 객체를 사용하게 되는 경우, 원본 Entity를 상속하게 된다.
+    
     - 그 후 실제로 사용되는 시점에 Entity 정보를 조회하여 Proxy Entity가 원본 Entity를 참조하도록 한다. 
+    
     - private 기본생성자를 사용하게 된다면 상속이 불가능해지기에 protected나 public 생성자를 사용해야한다.
+    
+      
 
 - ### @Bean과 @Component 의 차이
 
-
   - @Bean의 경우 개발자가 컨트롤 불가능한 **외부 라이브러리**들을 Bean으로 등록시키고 싶을 때 사용한다.
-  - @Bean의 경우 주로 @Configuration이 붙은 클래스 내의 메소드에 사용된다.
-  - @Component의 경우 **개발자가 컨트롤 가능한 Class**에 붙여 사용한다.
-  - @Component는 @Service, @Controller, @Repository에 포함되어 있다.
+
+  -  @Bean의 경우 주로 @Configuration이 붙은 클래스 내의 메소드에 사용된다.
+
+  -  @Component의 경우 **개발자가 컨트롤 가능한 Class**에 붙여 사용한다.
+
+  -  @Component는 @Service, @Controller, @Repository에 포함되어 있다.
+
+    
 
 - ### Servlet 동작과정
 
   1. client가 HTTP Request를 Servlet Container에 보낸다.
+
   2. Servlet Container는 HttpServletRequest, HttpServletResponse 두 객체를 생성한다.
+
   3. Client의 HTTP 요청을 분석하여 어느 Servlet에 대한 요청인지 찾는다.
+
   4. 해당하는 Servlet의 service() 메소드를 호출 및 doGet() doPost() 등을 호출
      - 2에서 생성된 HttpServletRequest, HttpServletResponse가 인자로 전달됨.
      - 이 과정에서 해당 Servlet이 없다면 생성하고 init()을 먼저 호출한다.
+
   5. doGet()/doPost() 에서 생성된 동적 웹 페이지 결과물이 HttpServletResponse 객체에 담긴다.
+
   6. Servlet Container는 HttpServletResponse 객체를 HTTP 형태로 바꾸어 응답한다.
+
   7. 이 후 HttpServletRequest, HttpServletResponse 객체의 메모리를 소멸 시킨다.
+
+     
 
 - ### DispatcherServlet
 
@@ -297,7 +315,55 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
        1. 만약 Controller가 View 이름을 반환하면 ViewResolver를 통해 렌더링 후 View를 반환하게 된다.
        2. 만약 객체를 반환하였다면(@RestController) ViewResolver 대신 HttpMessageConverter가 동작해서 객체를 JSON으로 Serialize하여 반환한다. 
 
-       
+
+- ### Session 방식 vs. Token(JWT) 방식
+
+  - HTTP는 stateless 프로토콜이다. 따라서 이전에 누가 요청을 했는지, 인증된 client인 지 알 수가 없다.
+
+  - 이를 해결하는 방법으로 세션 방식과 jwt token 방식이 있는데 그 차이점을 알아보자.
+
+  - ##### 세션 방식
+
+    - #### ![image-20220831030656766](C:\Users\csu20\AppData\Roaming\Typora\typora-user-images\image-20220831030656766.png) 
+
+    - 세션 방식은 Server측에 Client의 접속 상태를 저장하는 방식이다.
+
+      1. 웹 서버 or 별도의 세션 스토리지에 세션을 저장해놓고, 클라이언트에게 해당 Session Id를 반환해준다.
+      2. 이 후 client 측에서는 해당 Session Id를 쿠키에 저장해두고 다음 요청시에 해당 값을 같이 보낸다.
+      3. 서버 측에서는 해당 Session Id를 통해 Client의  검증할 수 있다.
+
+    - 장점
+
+      1. 구현이 상당히 명확하고 실제 서버에서 로그인 상태 확인이 굉장히 유용하다.
+      2. client측의 쿠키가 설사 노출되더라도 session id는 유의미한 값을 갖고 있지 않아 보안성이 강하다.
+
+    - 단점
+
+      1. 서버에서 추가적인 세션 저장공간이 필요하다.
+      2. 서버의 확장성이 떨어진다. (Scale-out이 힘들다.)
+
+  - ##### 토큰(JWT) 방식
+
+    - ![image-20220831032016940](C:\Users\csu20\AppData\Roaming\Typora\typora-user-images\image-20220831032016940.png)
+    - 토큰은 사용자 인증을 위한 정보를 서명한 것이며, JWT(JSON Web Token) 은 현재 토큰 인증에서 가장 많이 사용되는 표준이다.
+      1. 사용자가 로그인하면 서버측에서 secret key를 이용하여 acess token을 발급한다.
+      2. Client 측은 해당 acess token을 로컬 스토리지/쿠키 등에 저장하고, 이후 HTTP 요청 시 같이 보낸다.
+      3. 서버는 JWT Signature를 검증하고, Payload로부터 사용자 정보를 확인하고 서비스를 처리한다.
+    - 장점
+      1. 세션처럼 서버 측에서 정보를 저장하고 있지 않고, 단순히 전달받은 토큰의 데이터와 서명을 검증하는 것으로 인증이 가능하다. 즉 메모리가 따로 들지 않는다.
+      2. Scale out이 용이하다.
+      3. 멀티플랫폼/멀티서비스에서 사용하기 용이하다.
+      4. 트래픽에 대한 부담이 낮다.
+    - 단점
+      1. 토큰에는 사용자 정보가 담겨 있으므로 jwt 토큰이 노출될 시 중요한 정보가 노출된다.
+      2. 일반적으로 토큰에는 데이터가 담겨있으므로 단순 Session Id만 담겨있는 것보다 사이즈가 크다.
+
+  - 이미지 출처 : https://blog.lgcns.com/2687
+
+  - JWT는 공개 키 암호 방식을 사용한다. 자세히 알고 싶다면 아래 링크 참조
+
+    - https://meetup.toast.com/posts/239
+
 
 - ### @Controller vs. @RestController
 
@@ -324,7 +390,7 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
      - 비연결형 통신 : 효율성을 우선으로 하여, 확인 절차 없이 데이터를 전달하는 통신방식
      - 연결지향형 통신 : TCP, 비연결형 통신: UDP
      - 3계층까지가 하드웨어 통신을 주로 다룬다면, 4계층부터는 소프트웨어 통신을 많이 다룬다.
-  5.  Session Layer : 데이터가 통신하기 위한 논리적인 연결을 해주는 모듈
+  5. Session Layer : 데이터가 통신하기 위한 논리적인 연결을 해주는 모듈
      - 통신을 하기 위한 세션을 확립/유지/중단(운영체제가 해줌)
   6. Presentation Layer : 여러 다른 시스템들이 저마다 다른 데이터 표현 방식을 사용하는데, 이를 하나의 통일된 구문 형식으로 변환시키는 기능을 수행하는 모듈.
   7. Application Layer : 실 서비스(네트워크 어플리케이션)을 제공하기 위해  인터넷 상 컴퓨터들 간 다양한 데이터(메세지, 명령)를 주고 받게 해주는 모듈.
@@ -332,6 +398,18 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
      - 클라이언트 - 서버 모델, P2P 모델 2가지 모델이 존재
      - 클라이언트 - 서버 모델 : 클라이언트는 서버에게 서비스 요청. 서비스는 요청에 대한 처리와 응답. 웹 서비스 등. 주로 TCP 이용
      - P2P 모델 : 개인과 개인이 연결되어 통신되는 구조. 
+
+## 디자인 패턴
+
+- ### Strategy Pattern(전략 패턴)
+
+  - 특정 행위(알고리즘이나 로직)을 다른 클래스로 위임하여, 동적으로 행위를 자유롭게 바꿀 수 있게 해주는 패턴
+  - ![image-20220905010656836](C:\Users\csu20\AppData\Roaming\Typora\typora-user-images\image-20220905010656836.png)
+
+- ### Observer Pattern
+
+  - ![image-20220905010915149](C:\Users\csu20\AppData\Roaming\Typora\typora-user-images\image-20220905010915149.png)
+  - 한 객체의 상태가 바뀌면 그 객체에 의존하는 다른 객체에게 연락이 가고 자동으로 내용이 갱신되는 방식으로 일대다 의존성을 정의하는 패턴.
 
 ## 60060_가사검색에서 Python vs C++
 
