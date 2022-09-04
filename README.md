@@ -227,7 +227,7 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
      }
      ```
   - 위와 같은 코드가 있다 하면 실행 결과는 다음과 같다.
-    - ![image](image_실행결과.png)
+    - ![image_실행결과](https://user-images.githubusercontent.com/54143203/188330461-736a91bf-aff2-4f05-8dcc-cbc768561d7e.png)
     - static final primitive type 멤버에 대한 접근으로는 class loading이 되지 않는다.
     - static primitive type 멤버에 대한 접근으로는 class loading이 된다.
     - static final reference type 멤버에 대한 접근으로는 class loading이 된다. (ClassA, ClassC 모두 Loading됨)
@@ -287,7 +287,8 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
 
 - ### DispatcherServlet
 
-  - ![image-20220831051914472](D:\git_repos\ProblemSolving\DispatcherServlet.png)
+  - ![DispatcherServlet](https://user-images.githubusercontent.com/54143203/188330470-9179e724-eb69-494e-9cc5-c775c37f35c0.png)
+
 
   - DispatcherServlet이란 HTTP 프로토콜을 통해 들어오는 모든 요청을 가장 먼저 받아 중앙집중식으로 처리하는 프론트 컨트롤러이다.
 
@@ -324,7 +325,7 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
 
   - ##### 세션 방식
 
-    - #### ![image-20220831030656766](C:\Users\csu20\AppData\Roaming\Typora\typora-user-images\image-20220831030656766.png) 
+    - ![session](https://user-images.githubusercontent.com/54143203/188330479-fa1121f8-1038-4d5c-8d58-1f82ec154b37.png)
 
     - 세션 방식은 Server측에 Client의 접속 상태를 저장하는 방식이다.
 
@@ -344,7 +345,7 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
 
   - ##### 토큰(JWT) 방식
 
-    - ![image-20220831032016940](C:\Users\csu20\AppData\Roaming\Typora\typora-user-images\image-20220831032016940.png)
+    - ![토큰](https://user-images.githubusercontent.com/54143203/188330497-3f06ac75-c1b1-4e6b-b916-4a2ef804cbc3.png)
     - 토큰은 사용자 인증을 위한 정보를 서명한 것이며, JWT(JSON Web Token) 은 현재 토큰 인증에서 가장 많이 사용되는 표준이다.
       1. 사용자가 로그인하면 서버측에서 secret key를 이용하여 acess token을 발급한다.
       2. Client 측은 해당 acess token을 로컬 스토리지/쿠키 등에 저장하고, 이후 HTTP 요청 시 같이 보낸다.
@@ -403,12 +404,12 @@ code of programmers code test (https://programmers.co.kr/learn/challenges)
 
 - ### Strategy Pattern(전략 패턴)
 
+  - ![strategy_pattern](https://user-images.githubusercontent.com/54143203/188330507-0600f33e-ab6d-477c-a19d-7737db876df2.png)
   - 특정 행위(알고리즘이나 로직)을 다른 클래스로 위임하여, 동적으로 행위를 자유롭게 바꿀 수 있게 해주는 패턴
-  - ![image-20220905010656836](C:\Users\csu20\AppData\Roaming\Typora\typora-user-images\image-20220905010656836.png)
 
 - ### Observer Pattern
 
-  - ![image-20220905010915149](C:\Users\csu20\AppData\Roaming\Typora\typora-user-images\image-20220905010915149.png)
+  - ![observer](https://user-images.githubusercontent.com/54143203/188330513-f9404c99-271b-46ac-ab9e-6683f5823f2a.png)
   - 한 객체의 상태가 바뀌면 그 객체에 의존하는 다른 객체에게 연락이 가고 자동으로 내용이 갱신되는 방식으로 일대다 의존성을 정의하는 패턴.
 
 ## 60060_가사검색에서 Python vs C++
